@@ -14,7 +14,7 @@ public class Game
     private WordList wordList;
     private Word word;
     private Player player;
-    Integer guessRemained = 10;
+    Integer guessRemained = 6;
     private ArrayList<Character> guessedLetters = new ArrayList<>();
     Scanner scanner = new Scanner(System.in);
     private boolean playerHasWon = false;
@@ -26,6 +26,12 @@ public class Game
         System.out.print("Skriv ditt namn: ");
         String name = scanner.next();
         player = new Player(name, 0);
+        ArrayList<String> menuItems = new ArrayList<>();
+        menuItems.add("Avsluta");
+        menuItems.add("Starta spelet");
+        menuItems.add("Högst poäng");
+        Menu menu = new Menu(menuItems);
+        menu.showMenu();
     }
 
     public StringBuilder replaceLetterWithDash (String word, ArrayList<Character> guessedLetters)
@@ -43,7 +49,6 @@ public class Game
                 str.append("-");
             }
         }
-
         return str;
     }
 
@@ -80,21 +85,32 @@ public class Game
             if (userResponse.equalsIgnoreCase("nej"))
             {
                 System.out.println("Bra jobbat, hoppas vi ses igen!");
-                System.out.print("Hejdå" + this.player.getName());
+                System.out.println("Hejdå " + this.player.getName());
                 System.out.println("Din totala poäng är: " + this.player.getTotalPoints());
-            } else
+                System.out.println("Din högsta poäng är: " + this.player.getHighestPoints());
+                break;
+            } else if (userResponse.equalsIgnoreCase("ja"))
             {
                 System.out.println("Yesss!");
                 this.player.resetTotalPoints();
                 this.resetGuessRemained();
+                this.resetGuessedLetters();
+            } else
+            {
+                System.out.println("Fel svar, försök igen");
             }
 
         }
     }
 
-    public void resetGuessRemained()
+    public void resetGuessedLetters ()
     {
-        this.guessRemained = 10;
+        this.guessedLetters.clear();
+    }
+
+    public void resetGuessRemained ()
+    {
+        this.guessRemained = 6;
     }
 
     public int findLetterIndex (String letter, String word)
@@ -112,10 +128,12 @@ public class Game
 
     public String endGame ()
     {
+        String correctWord = word.toString();
         String finalResult = "";
         if (this.playerHasWon)
-            finalResult += "Grattis" + this.player.getName() + ", du har gissat rätt, din poäng är: " + this.player.getTotalPoints();
-        finalResult += "Tyvärr, du vann inte den här gången, försök igen.";
+            finalResult += "Grattis " + this.player.getName() + ", du har gissat rätt, din poäng är: " + this.player.getTotalPoints();
+        else
+            finalResult += "Tyvärr, du vann inte den här gången, försök igen. Ordet jag tänkte på var " + correctWord;
         return finalResult;
     }
 }

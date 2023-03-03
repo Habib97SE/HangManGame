@@ -1,6 +1,7 @@
 package HangMan;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Menu
 {
@@ -15,6 +16,12 @@ public class Menu
     {
         for (String menuItem : menuItems)
             System.out.println(String.join("", Integer.toString(menuItems.indexOf(menuItem)), "- ", menuItem));
+    }
+
+    public int chooseMenuItem()
+    {
+        System.out.print("Skriv ditt val: ");
+        return new Scanner(System.in).nextInt();
     }
 
     public ArrayList<String> getMenuItems ()

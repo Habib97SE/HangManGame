@@ -7,6 +7,8 @@ public class Player
     private String name;
     private Integer totalPoints;
 
+    private ArrayList<Integer> allPlayersPoints = new ArrayList<>();
+
     public Player (String name, int totalPoints)
     {
         this.name = name;
@@ -40,12 +42,24 @@ public class Player
 
     public void resetTotalPoints ()
     {
+        this.allPlayersPoints.add(totalPoints);
         this.totalPoints = 0;
     }
 
     public boolean hasWon(String word, Integer remainedGuess)
     {
         return remainedGuess >= 0 && !word.contains("-");
+    }
+
+    public Integer getHighestPoints()
+    {
+        Integer highestPoints = this.allPlayersPoints.get(0);
+        for (Integer playerPoints : allPlayersPoints)
+        {
+            if (playerPoints > highestPoints)
+                highestPoints = playerPoints;
+        }
+        return highestPoints;
     }
 
     @Override
